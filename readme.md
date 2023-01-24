@@ -24,6 +24,13 @@ This project uses [Feathers](http://feathersjs.com). An open source framework fo
     npm start
     ```
 
+## Development
+Start local server with code change monitoring
+
+```
+npm install
+npm run dev
+```
 ## Testing
 
 Run `npm test` and all your tests in the `test/` directory will be run.
