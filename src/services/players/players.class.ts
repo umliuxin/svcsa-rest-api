@@ -6,7 +6,9 @@ import type { KnexAdapterParams, KnexAdapterOptions } from '@feathersjs/knex'
 import type { Application } from '../../declarations'
 import type { Player, PlayerData, PlayerPatch, PlayerQuery } from './players.schema'
 
-export interface PlayerParams extends KnexAdapterParams<PlayerQuery> {}
+export interface PlayerParams extends KnexAdapterParams<PlayerQuery> {
+
+}
 
 // By default calls the standard Knex adapter service methods but can be customized with your own functionality.
 export class PlayerService<ServiceParams extends Params = PlayerParams> extends KnexService<
@@ -14,7 +16,9 @@ export class PlayerService<ServiceParams extends Params = PlayerParams> extends 
   PlayerData,
   ServiceParams,
   PlayerPatch
-> {}
+> {
+
+}
 
 export const getOptions = (app: Application): KnexAdapterOptions => {
   return {

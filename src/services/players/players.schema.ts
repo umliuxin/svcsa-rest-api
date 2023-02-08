@@ -6,23 +6,67 @@ import type { Static } from '@feathersjs/typebox'
 import type { HookContext } from '../../declarations'
 import { dataValidator, queryValidator } from '../../validators'
 
+import { toLowerCaseProperty } from '../../utilities/property-name-converter';
 // Main data model schema
 export const playerSchema = Type.Object(
   {
-    ID: Type.Number(),
-    Name: Type.String()
+    id: Type.Number(),
+    birth: Type.String({ format: 'date-time' }),
+    height: Type.Number(),
+    weight: Type.Number(),
+    photosrc: Type.String(),
+    sex: Type.String(),
+    email: Type.String(),
+    name: Type.String(),
+    birthday: Type.Object({
+      month: Type.Number(),
+      day: Type.Number(),
+    })
   },
-  { $id: 'Player', additionalProperties: false }
+  { $id: 'Player', additionalProperties: true }
 )
-export type Player = Static<typeof playerSchema>
-export const playerResolver = resolve<Player, HookContext>({})
 
-export const playerExternalResolver = resolve<Player, HookContext>({})
+export type Player = Static<typeof playerSchema>
+export const playerResolver = resolve<Player, HookContext>({
+  photosrc: async (value) => {
+    // Return the photo avatar URL
+    return `http://svcsa.org/uploads/${value}`;
+  },
+  height: async (value) => {
+    if (!value) {
+      return;
+    }
+    // Calculate to cm, if it is in inch
+    if (value < 10) {
+      return value * 33;
+    }
+    return value
+  },
+  birthday: async (_, player) => {
+    const dateObj = new Date(player["birth"])
+
+    return {
+      month: dateObj.getMonth() + 1,
+      day: dateObj.getDate()
+    }
+  },
+  birth: async () => undefined,
+
+}, {
+  converter: async (rawData) => {
+    return toLowerCaseProperty(rawData, playerSchema);
+  }
+})
+
+export const playerExternalResolver = resolve<Player, HookContext>({
+
+})
 
 // Schema for creating new entries
-export const playerDataSchema = Type.Pick(playerSchema, ['Name'], {
+export const playerDataSchema = Type.Pick(playerSchema, ['name', 'birth', 'height', 'weight', 'sex', 'email'], {
   $id: 'PlayerData'
 })
+
 export type PlayerData = Static<typeof playerDataSchema>
 export const playerDataValidator = getDataValidator(playerDataSchema, dataValidator)
 export const playerDataResolver = resolve<Player, HookContext>({})
@@ -36,7 +80,7 @@ export const playerPatchValidator = getDataValidator(playerPatchSchema, dataVali
 export const playerPatchResolver = resolve<Player, HookContext>({})
 
 // Schema for allowed query properties
-export const playerQueryProperties = Type.Pick(playerSchema, ['ID', 'Name'])
+export const playerQueryProperties = Type.Pick(playerSchema, ['name'])
 export const playerQuerySchema = Type.Intersect(
   [
     querySyntax(playerQueryProperties),
