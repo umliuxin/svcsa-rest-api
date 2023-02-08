@@ -4,26 +4,22 @@ import { KnexService } from '@feathersjs/knex'
 import type { KnexAdapterParams, KnexAdapterOptions } from '@feathersjs/knex'
 
 import type { Application } from '../../declarations'
-import type { Player, PlayerData, PlayerPatch, PlayerQuery } from './players.schema'
+import type { Team, TeamData, TeamPatch, TeamQuery } from './teams.schema'
 
-export interface PlayerParams extends KnexAdapterParams<PlayerQuery> {
-
-}
+export interface TeamParams extends KnexAdapterParams<TeamQuery> {}
 
 // By default calls the standard Knex adapter service methods but can be customized with your own functionality.
-export class PlayerService<ServiceParams extends Params = PlayerParams> extends KnexService<
-  Player,
-  PlayerData,
+export class TeamService<ServiceParams extends Params = TeamParams> extends KnexService<
+  Team,
+  TeamData,
   ServiceParams,
-  PlayerPatch
-> {
-
-}
+  TeamPatch
+> {}
 
 export const getOptions = (app: Application): KnexAdapterOptions => {
   return {
     paginate: app.get('paginate'),
     Model: app.get('mysqlClient'),
-    name: 'bb_player',
+    name: 'bb_team'
   }
 }
