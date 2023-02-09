@@ -19,7 +19,7 @@ export const teamSchema = Type.Object(
     wechat: Type.String(),
     logosrc: Type.String(),
     photosrc: Type.String(),
-    description: Type.String(),
+    description: Type.Optional(Type.String()),
     
   },
   { $id: 'Team', additionalProperties: false }

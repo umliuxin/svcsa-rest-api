@@ -2,8 +2,16 @@
 import { feathers } from '@feathersjs/feathers'
 import type { TransportConnection, Params } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
-import type { Seasons, SeasonsData, SeasonsQuery, SeasonsService } from './services/seasons/seasons'
-export type { Seasons, SeasonsData, SeasonsQuery }
+import type { Season, SeasonData, SeasonQuery, SeasonService } from './services/season/season'
+export type { Season, SeasonData, SeasonQuery }
+
+import type {
+  Seasonteam,
+  SeasonteamData,
+  SeasonteamQuery,
+  SeasonteamService
+} from './services/seasonteam/seasonteam'
+export type { Seasonteam, SeasonteamData, SeasonteamQuery }
 
 import type { Team, TeamData, TeamQuery, TeamService } from './services/teams/teams'
 export type { Team, TeamData, TeamQuery }
@@ -25,11 +33,18 @@ type PlayerClientService = Pick<PlayerService<Params<PlayerQuery>>, typeof playe
 const teamServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
 type TeamClientService = Pick<TeamService<Params<TeamQuery>>, typeof teamServiceMethods[number]>
 
-const seasonsServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
-type SeasonsClientService = Pick<SeasonsService<Params<SeasonsQuery>>, typeof seasonsServiceMethods[number]>
+const seasonteamServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type SeasonteamClientService = Pick<
+  SeasonteamService<Params<SeasonteamQuery>>,
+  typeof seasonteamServiceMethods[number]
+>
+
+const seasonServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type SeasonClientService = Pick<SeasonService<Params<SeasonQuery>>, typeof seasonServiceMethods[number]>
 
 export interface ServiceTypes {
-  seasons: SeasonsClientService
+  season: SeasonClientService
+  seasonteam: SeasonteamClientService
   teams: TeamClientService
   players: PlayerClientService
   users: UserClientService
@@ -62,8 +77,11 @@ export const createClient = <Configuration = any>(
   client.use('teams', connection.service('teams'), {
     methods: teamServiceMethods
   })
-  client.use('seasons', connection.service('seasons'), {
-    methods: seasonsServiceMethods
+  client.use('seasonteam', connection.service('seasonteam'), {
+    methods: seasonteamServiceMethods
+  })
+  client.use('season', connection.service('season'), {
+    methods: seasonServiceMethods
   })
   return client
 }

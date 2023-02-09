@@ -4,16 +4,16 @@ import { KnexService } from '@feathersjs/knex'
 import type { KnexAdapterParams, KnexAdapterOptions } from '@feathersjs/knex'
 
 import type { Application } from '../../declarations'
-import type { Seasons, SeasonsData, SeasonsPatch, SeasonsQuery } from './seasons.schema'
+import type { Season, SeasonData, SeasonPatch, SeasonQuery } from './season.schema'
 
-export interface SeasonsParams extends KnexAdapterParams<SeasonsQuery> {}
+export interface SeasonParams extends KnexAdapterParams<SeasonQuery> {}
 
 // By default calls the standard Knex adapter service methods but can be customized with your own functionality.
-export class SeasonsService<ServiceParams extends Params = SeasonsParams> extends KnexService<
-  Seasons,
-  SeasonsData,
+export class SeasonService<ServiceParams extends Params = SeasonParams> extends KnexService<
+  Season,
+  SeasonData,
   ServiceParams,
-  SeasonsPatch
+  SeasonPatch
 > {}
 
 export const getOptions = (app: Application): KnexAdapterOptions => {
