@@ -24,7 +24,8 @@ export const player = (app: Application) => {
   // Register our service on the Feathers application
   app.use('players', new PlayerService(getOptions(app)), {
     // A list of all methods this service exposes externally
-    methods: ['find', 'get', 'create', 'patch', 'remove'],
+    // methods: ['find', 'get', 'create', 'patch', 'remove'],
+    methods: ['find', 'get'],
     // You can add additional custom events to be sent to clients here
     events: []
   })

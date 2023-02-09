@@ -2,6 +2,9 @@
 import { feathers } from '@feathersjs/feathers'
 import type { TransportConnection, Params } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
+import type { Seasons, SeasonsData, SeasonsQuery, SeasonsService } from './services/seasons/seasons'
+export type { Seasons, SeasonsData, SeasonsQuery }
+
 import type { Team, TeamData, TeamQuery, TeamService } from './services/teams/teams'
 export type { Team, TeamData, TeamQuery }
 
@@ -22,7 +25,11 @@ type PlayerClientService = Pick<PlayerService<Params<PlayerQuery>>, typeof playe
 const teamServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
 type TeamClientService = Pick<TeamService<Params<TeamQuery>>, typeof teamServiceMethods[number]>
 
+const seasonsServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type SeasonsClientService = Pick<SeasonsService<Params<SeasonsQuery>>, typeof seasonsServiceMethods[number]>
+
 export interface ServiceTypes {
+  seasons: SeasonsClientService
   teams: TeamClientService
   players: PlayerClientService
   users: UserClientService
@@ -54,6 +61,9 @@ export const createClient = <Configuration = any>(
   })
   client.use('teams', connection.service('teams'), {
     methods: teamServiceMethods
+  })
+  client.use('seasons', connection.service('seasons'), {
+    methods: seasonsServiceMethods
   })
   return client
 }

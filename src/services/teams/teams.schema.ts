@@ -13,6 +13,14 @@ export const teamSchema = Type.Object(
     id: Type.Number(),
     name: Type.String(),
     shortname: Type.String(),
+    captain: Type.String(),
+    email: Type.String(),
+    tel: Type.String(),
+    wechat: Type.String(),
+    logosrc: Type.String(),
+    photosrc: Type.String(),
+    description: Type.String(),
+    
   },
   { $id: 'Team', additionalProperties: false }
 )

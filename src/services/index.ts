@@ -1,3 +1,4 @@
+import { seasons } from './seasons/seasons'
 import { team } from './teams/teams'
 import { player } from './players/players'
 import { user } from './users/users'
@@ -5,6 +6,7 @@ import { user } from './users/users'
 import type { Application } from '../declarations'
 
 export const services = (app: Application) => {
+  app.configure(seasons)
   app.configure(team)
   app.configure(player)
   app.configure(user)
