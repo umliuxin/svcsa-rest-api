@@ -21,7 +21,11 @@ export const seasonteamSchema = Type.Object(
   { $id: 'Seasonteam', additionalProperties: false }
 )
 export type Seasonteam = Static<typeof seasonteamSchema>
-export const seasonteamResolver = resolve<Seasonteam, HookContext>({})
+export const seasonteamResolver = resolve<Seasonteam, HookContext>({}, {
+  converter: async (rawData) => {
+    return toLowerCaseProperty(rawData, seasonteamSchema);
+  }
+})
 
 export const seasonteamExternalResolver = resolve<Seasonteam, HookContext>({
 
@@ -31,10 +35,6 @@ export const seasonteamExternalResolver = resolve<Seasonteam, HookContext>({
   season: virtual(async (seasonteam, context) => {
     return context.app.service('season').get(seasonteam.seasonid)
   })
-}, {
-  converter: async (rawData) => {
-    return toLowerCaseProperty(rawData, seasonteamSchema);
-  }
 })
 
 // Schema for creating new entries

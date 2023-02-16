@@ -2,6 +2,31 @@
 import { feathers } from '@feathersjs/feathers'
 import type { TransportConnection, Params } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
+import type { Match, MatchData, MatchQuery, MatchService } from './services/match/match'
+export type { Match, MatchData, MatchQuery }
+
+import type { Matchlog, MatchlogData, MatchlogQuery, MatchlogService } from './services/matchlog/matchlog'
+export type { Matchlog, MatchlogData, MatchlogQuery }
+
+import type {
+  Competition,
+  CompetitionData,
+  CompetitionQuery,
+  CompetitionService
+} from './services/competition/competition'
+export type { Competition, CompetitionData, CompetitionQuery }
+
+import type { Playoff, PlayoffData, PlayoffQuery, PlayoffService } from './services/playoff/playoff'
+export type { Playoff, PlayoffData, PlayoffQuery }
+
+import type {
+  Seasonteamplayer,
+  SeasonteamplayerData,
+  SeasonteamplayerQuery,
+  SeasonteamplayerService
+} from './services/seasonteamplayer/seasonteamplayer'
+export type { Seasonteamplayer, SeasonteamplayerData, SeasonteamplayerQuery }
+
 import type { Season, SeasonData, SeasonQuery, SeasonService } from './services/season/season'
 export type { Season, SeasonData, SeasonQuery }
 
@@ -42,7 +67,36 @@ type SeasonteamClientService = Pick<
 const seasonServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
 type SeasonClientService = Pick<SeasonService<Params<SeasonQuery>>, typeof seasonServiceMethods[number]>
 
+const seasonteamplayerServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type SeasonteamplayerClientService = Pick<
+  SeasonteamplayerService<Params<SeasonteamplayerQuery>>,
+  typeof seasonteamplayerServiceMethods[number]
+>
+
+const playoffServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type PlayoffClientService = Pick<PlayoffService<Params<PlayoffQuery>>, typeof playoffServiceMethods[number]>
+
+const competitionServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type CompetitionClientService = Pick<
+  CompetitionService<Params<CompetitionQuery>>,
+  typeof competitionServiceMethods[number]
+>
+
+const matchlogServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type MatchlogClientService = Pick<
+  MatchlogService<Params<MatchlogQuery>>,
+  typeof matchlogServiceMethods[number]
+>
+
+const matchServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type MatchClientService = Pick<MatchService<Params<MatchQuery>>, typeof matchServiceMethods[number]>
+
 export interface ServiceTypes {
+  match: MatchClientService
+  matchlog: MatchlogClientService
+  competition: CompetitionClientService
+  playoff: PlayoffClientService
+  seasonteamplayer: SeasonteamplayerClientService
   season: SeasonClientService
   seasonteam: SeasonteamClientService
   teams: TeamClientService
@@ -82,6 +136,21 @@ export const createClient = <Configuration = any>(
   })
   client.use('season', connection.service('season'), {
     methods: seasonServiceMethods
+  })
+  client.use('seasonteamplayer', connection.service('seasonteamplayer'), {
+    methods: seasonteamplayerServiceMethods
+  })
+  client.use('playoff', connection.service('playoff'), {
+    methods: playoffServiceMethods
+  })
+  client.use('competition', connection.service('competition'), {
+    methods: competitionServiceMethods
+  })
+  client.use('matchlog', connection.service('matchlog'), {
+    methods: matchlogServiceMethods
+  })
+  client.use('match', connection.service('match'), {
+    methods: matchServiceMethods
   })
   return client
 }

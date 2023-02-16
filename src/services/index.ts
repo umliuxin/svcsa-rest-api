@@ -1,3 +1,8 @@
+import { match } from './match/match'
+import { matchlog } from './matchlog/matchlog'
+import { competition } from './competition/competition'
+import { playoff } from './playoff/playoff'
+import { seasonteamplayer } from './seasonteamplayer/seasonteamplayer'
 import { season } from './season/season'
 import { seasonteam } from './seasonteam/seasonteam'
 import { team } from './teams/teams'
@@ -7,6 +12,11 @@ import { user } from './users/users'
 import type { Application } from '../declarations'
 
 export const services = (app: Application) => {
+  app.configure(match)
+  app.configure(matchlog)
+  app.configure(competition)
+  app.configure(playoff)
+  app.configure(seasonteamplayer)
   app.configure(season)
   app.configure(seasonteam)
   app.configure(team)
