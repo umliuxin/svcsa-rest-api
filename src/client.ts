@@ -2,6 +2,14 @@
 import { feathers } from '@feathersjs/feathers'
 import type { TransportConnection, Params } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
+import type {
+  Playermatchstat,
+  PlayermatchstatData,
+  PlayermatchstatQuery,
+  PlayermatchstatService
+} from './services/playermatchstat/playermatchstat'
+export type { Playermatchstat, PlayermatchstatData, PlayermatchstatQuery }
+
 import type { Match, MatchData, MatchQuery, MatchService } from './services/match/match'
 export type { Match, MatchData, MatchQuery }
 
@@ -91,7 +99,14 @@ type MatchlogClientService = Pick<
 const matchServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
 type MatchClientService = Pick<MatchService<Params<MatchQuery>>, typeof matchServiceMethods[number]>
 
+const playermatchstatServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type PlayermatchstatClientService = Pick<
+  PlayermatchstatService<Params<PlayermatchstatQuery>>,
+  typeof playermatchstatServiceMethods[number]
+>
+
 export interface ServiceTypes {
+  playermatchstat: PlayermatchstatClientService
   match: MatchClientService
   matchlog: MatchlogClientService
   competition: CompetitionClientService
@@ -151,6 +166,9 @@ export const createClient = <Configuration = any>(
   })
   client.use('match', connection.service('match'), {
     methods: matchServiceMethods
+  })
+  client.use('playermatchstat', connection.service('playermatchstat'), {
+    methods: playermatchstatServiceMethods
   })
   return client
 }

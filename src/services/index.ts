@@ -1,3 +1,4 @@
+import { playermatchstat } from './playermatchstat/playermatchstat'
 import { match } from './match/match'
 import { matchlog } from './matchlog/matchlog'
 import { competition } from './competition/competition'
@@ -12,6 +13,7 @@ import { user } from './users/users'
 import type { Application } from '../declarations'
 
 export const services = (app: Application) => {
+  app.configure(playermatchstat)
   app.configure(match)
   app.configure(matchlog)
   app.configure(competition)
