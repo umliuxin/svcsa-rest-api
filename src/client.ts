@@ -2,6 +2,9 @@
 import { feathers } from '@feathersjs/feathers'
 import type { TransportConnection, Params } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
+import type { Teamrank, TeamrankData, TeamrankQuery, TeamrankService } from './services/teamrank/teamrank'
+export type { Teamrank, TeamrankData, TeamrankQuery }
+
 import type {
   Playermatchstat,
   PlayermatchstatData,
@@ -105,7 +108,11 @@ type PlayermatchstatClientService = Pick<
   typeof playermatchstatServiceMethods[number]
 >
 
+const teamrankServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type TeamrankClientService = Pick<TeamrankService, typeof teamrankServiceMethods[number]>
+
 export interface ServiceTypes {
+  teamrank: TeamrankClientService
   playermatchstat: PlayermatchstatClientService
   match: MatchClientService
   matchlog: MatchlogClientService
@@ -169,6 +176,9 @@ export const createClient = <Configuration = any>(
   })
   client.use('playermatchstat', connection.service('playermatchstat'), {
     methods: playermatchstatServiceMethods
+  })
+  client.use('teamrank', connection.service('teamrank'), {
+    methods: teamrankServiceMethods
   })
   return client
 }

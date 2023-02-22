@@ -33,7 +33,7 @@ export const seasonResolver = resolve<Season, HookContext>({
       year: dateObj.getFullYear()
     }
   },
-  starttime: async () => undefined,
+  // starttime: async () => undefined,
 }, {
   converter: async (rawData) => {
     return toLowerCaseProperty(rawData, seasonSchema);
@@ -59,7 +59,7 @@ export const seasonPatchValidator = getDataValidator(seasonPatchSchema, dataVali
 export const seasonPatchResolver = resolve<Season, HookContext>({})
 
 // Schema for allowed query properties
-export const seasonQueryProperties = Type.Pick(seasonSchema, ['name'])
+export const seasonQueryProperties = Type.Pick(seasonSchema, ['name', 'starttime'])
 export const seasonQuerySchema = Type.Intersect(
   [
     querySyntax(seasonQueryProperties),
