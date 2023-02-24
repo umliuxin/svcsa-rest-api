@@ -5,11 +5,12 @@ import type { Application } from '../../declarations'
 import { app } from '../../app'
 
 import type { Match } from '../match/match.schema'
+import type { TeamEssential } from '../teams/teams.schema'
 
 export type Teamrank = {
   rank?: number;
-  teamname?: string;
-  teamid?: number;
+  team?: TeamEssential;
+  teamid: number;
   win: number;
   lose: number;
   forfeit: number;
@@ -50,7 +51,6 @@ export class TeamrankService
   }
 
   async find(_params?: TeamrankParams): Promise<Teamrank[]> {
-    console.log(_params)
     let seasonId;
     if(_params?.query?.seasonid){
       seasonId = _params.query.seasonid;

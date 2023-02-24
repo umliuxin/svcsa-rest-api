@@ -2,6 +2,14 @@
 import { feathers } from '@feathersjs/feathers'
 import type { TransportConnection, Params } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
+import type {
+  Playerseasonaverage,
+  PlayerseasonaverageData,
+  PlayerseasonaverageQuery,
+  PlayerseasonaverageService
+} from './services/playerseasonaverage/playerseasonaverage'
+export type { Playerseasonaverage, PlayerseasonaverageData, PlayerseasonaverageQuery }
+
 import type { Teamrank, TeamrankData, TeamrankQuery, TeamrankService } from './services/teamrank/teamrank'
 export type { Teamrank, TeamrankData, TeamrankQuery }
 
@@ -111,7 +119,20 @@ type PlayermatchstatClientService = Pick<
 const teamrankServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
 type TeamrankClientService = Pick<TeamrankService, typeof teamrankServiceMethods[number]>
 
+const matchstatServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type MatchstatClientService = Pick<
+  MatchstatService<Params<MatchstatQuery>>,
+  typeof matchstatServiceMethods[number]
+>
+
+const playerseasonaverageServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+type PlayerseasonaverageClientService = Pick<
+  PlayerseasonaverageService<Params<PlayerseasonaverageQuery>>,
+  typeof playerseasonaverageServiceMethods[number]
+>
+
 export interface ServiceTypes {
+  playerseasonaverage: PlayerseasonaverageClientService
   teamrank: TeamrankClientService
   playermatchstat: PlayermatchstatClientService
   match: MatchClientService
@@ -179,6 +200,9 @@ export const createClient = <Configuration = any>(
   })
   client.use('teamrank', connection.service('teamrank'), {
     methods: teamrankServiceMethods
+  })
+  client.use('playerseasonaverage', connection.service('playerseasonaverage'), {
+    methods: playerseasonaverageServiceMethods
   })
   return client
 }

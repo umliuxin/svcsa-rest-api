@@ -20,18 +20,34 @@ export const teamSchema = Type.Object(
     logosrc: Type.String(),
     photosrc: Type.String(),
     description: Type.Optional(Type.String()),
-    
+
   },
   { $id: 'Team', additionalProperties: false }
 )
 export type Team = Static<typeof teamSchema>
-export const teamResolver = resolve<Team, HookContext>({}, {
+export const teamResolver = resolve<Team, HookContext>({
+  photosrc: async (value) => {
+    // Return the photo avatar URL
+    return `http://svcsa.org/uploads/${value}`;
+  },
+  logosrc: async (value) => {
+    // Return the photo avatar URL
+    return `http://svcsa.org/uploads/${value}`;
+  },
+
+}, {
   converter: async (rawData) => {
     return toLowerCaseProperty(rawData, teamSchema)
   }
 })
 
 export const teamExternalResolver = resolve<Team, HookContext>({})
+
+// Schema for essential data
+export const teamEssentialSchema = Type.Pick(teamSchema, ['name', 'logosrc', 'shortname'], {
+  $id: 'TeamData'
+})
+export type TeamEssential = Static<typeof teamEssentialSchema>
 
 // Schema for creating new entries
 export const teamDataSchema = Type.Pick(teamSchema, ['name'], {

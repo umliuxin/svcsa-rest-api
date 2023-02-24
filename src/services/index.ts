@@ -1,3 +1,4 @@
+import { playerseasonaverage } from './playerseasonaverage/playerseasonaverage'
 import { teamrank } from './teamrank/teamrank'
 import { playermatchstat } from './playermatchstat/playermatchstat'
 import { match } from './match/match'
@@ -14,6 +15,7 @@ import { user } from './users/users'
 import type { Application } from '../declarations'
 
 export const services = (app: Application) => {
+  app.configure(playerseasonaverage)
   app.configure(teamrank)
   app.configure(playermatchstat)
   app.configure(match)

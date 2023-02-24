@@ -1,9 +1,13 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
 
-import type { Application } from '../../declarations'
+import type { Application, HookContext } from '../../declarations'
 import { TeamrankService, getOptions } from './teamrank.class'
+import { resolve, virtual } from '@feathersjs/schema'
+import { hooks as schemaHooks } from '@feathersjs/schema'
 
 export * from './teamrank.class'
+
+import type { Teamrank } from './teamrank.class'
 
 // A configure function that registers the service and its hooks via `app.configure`
 export const teamrank = (app: Application) => {
@@ -17,7 +21,7 @@ export const teamrank = (app: Application) => {
   // Initialize hooks
   app.service('teamrank').hooks({
     around: {
-      all: []
+      all: [schemaHooks.resolveResult(teamResolver)]
     },
     before: {
       all: [],
@@ -38,3 +42,16 @@ declare module '../../declarations' {
     teamrank: TeamrankService
   }
 }
+
+
+const teamResolver = resolve<Teamrank, HookContext>({
+  team: virtual(async (teamrank, context) => {
+    const teamData = await context.app.service('teams').get(teamrank.teamid);
+    return {
+      name: teamData.name,
+      logosrc: teamData.logosrc,
+      shortname: teamData.shortname
+    }
+  }),
+  
+})
