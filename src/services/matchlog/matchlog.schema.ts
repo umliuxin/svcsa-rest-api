@@ -14,7 +14,7 @@ export const matchlogSchema = Type.Object(
     matchid: Type.String(),
     playerid: Type.Number(),
     event: Type.String(),
-    teamid: Type.Number()
+    teamid: Type.Number()// Add proper resolution of 
   },
   { $id: 'Matchlog', additionalProperties: false }
 )

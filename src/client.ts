@@ -116,14 +116,8 @@ type PlayermatchstatClientService = Pick<
   typeof playermatchstatServiceMethods[number]
 >
 
-const teamrankServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
+const teamrankServiceMethods = ['find'] as const
 type TeamrankClientService = Pick<TeamrankService, typeof teamrankServiceMethods[number]>
-
-const matchstatServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
-type MatchstatClientService = Pick<
-  MatchstatService<Params<MatchstatQuery>>,
-  typeof matchstatServiceMethods[number]
->
 
 const playerseasonaverageServiceMethods = ['find', 'get', 'create', 'update', 'patch', 'remove'] as const
 type PlayerseasonaverageClientService = Pick<
